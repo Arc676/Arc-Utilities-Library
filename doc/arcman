@@ -1,0 +1,37 @@
+." Manpage for ARCMAN.
+.Dd 05 Aug 2017
+.Dt "ARCMAN" "67" "Arc Utilities Library"
+.Sh NAME
+.Nm arcman
+.Nd display man pages in custom directories
+.Sh SYNOPSIS
+.Nm
+.Ar program_name
+.Sh DESCRIPTION
+The
+.Nm
+utility uses the \fBman\fP(1) utility to display
+manual pages found in the paths in the configuration file.
+This utility is useful when you have programs with man pages
+and want to put those man pages in a custom folder for any
+reason. The configuration file must be at ~/.arcutillib/arcman.conf
+.Pp
+The Arc Utilities Library does NOT come with an install
+OR uninstall script. Therefore, it is recommended that you keep
+the man pages in a separate folder for easy deletion should it
+be necessary. This is why the
+.Nm
+utility was created.
+.Pp
+If 'list' is given as the program name,
+.Nm
+will run \fBls\fP(1) on each path in the configuration file.
+.Sh SEE ALSO
+arcman.conf(66)
+.Sh AUTHOR
+Written by Arc676/Alessandro Vinciguerra
+.Sh COPYRIGHT
+Copyright (C) 2015-2017 Arc676/Alessandro Vinciguerra.
+.Pp
+Source code and man page available under GPLv3, see program
+file and gpl.txt file for details.
