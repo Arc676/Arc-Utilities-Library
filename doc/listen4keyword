@@ -1,0 +1,28 @@
+." Manpage for LISTEN4KEYWORD.
+.Dd 07 Nov 2016
+.Dt "LISTEN4KEYWORD" "67" "Arc Utilities Library"
+.Sh NAME
+.Nm listen4keyword
+.Nd toggles 'listen for keyword' in spoken commands
+.Sh SYNOPSIS
+.Nm
+.Sh DESCRIPTION
+The
+.Nm
+utility uses the AppleScript engine
+to toggle the 'listen for keyword' feature in macOS's
+spoken commands tool. This option makes the computer listen
+out for the specified keyword, allowing the user to
+use spoken commands without having to press any keyboard
+shortcuts. This utility toggles this feature without the user
+having to open System Preferences and finding the relevant
+check box.
+.Sh SEE ALSO
+arcman(67), osascript(1)
+.Sh AUTHOR
+Written by Arc676/Alessandro Vinciguerra
+.Sh COPYRIGHT
+Copyright (C) 2016-2017 Arc676/Alessandro Vinciguerra.
+.Pp
+Source code and man page available under GPLv3, see program
+file and gpl.txt file for details.

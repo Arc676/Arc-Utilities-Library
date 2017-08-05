@@ -1,0 +1,39 @@
+." Manpage for ARCTIME.
+.Dd 17 Oct 2016
+.Dt "ARCTIME" "67" "Arc Utilites Library"
+.Sh NAME
+.Nm arctime
+.Nd prints separate components of the date and time
+.Sh SYNOPSIS
+.Nm
+.Op Fl dDMYTz
+.Sh DESCRIPTION
+The
+.Nm
+utlity uses a blend of BASh and AWK
+to get the output of \fBdate\fP(1) and print out only
+the components desired by the user.
+.Sh OPTIONS
+.Bl -tag -width flag
+.It Fl d
+Prints the abbreviation of the day of the week
+.It Fl D
+Prints the date
+.It Fl M
+Prints the abbreviation of the month
+.It Fl Y
+Prints the year
+.It Fl T
+Prints the current time
+.It Fl z
+Prints the time zone
+.El
+.Sh SEE ALSO
+arcman(67), date(1), awk(1)
+.Sh AUTHOR
+Written by Arc676/Alessandro Vinciguerra
+.Sh COPYRIGHT
+Copyright (C) 2016-2017 Arc676/Alessandro Vinciguerra.
+.Pp
+Source code and man page available under GPLv3, see program
+file and gpl.txt file for details.
