@@ -1,0 +1,20 @@
+#!/bin/bash
+
+path="$HOME"
+search=""
+open="open -a vlc"
+
+while getopts "s:p:o" opt; do
+	case $opt in
+		s) search=$OPTARG  ;;
+		p) path=$OPTARG    ;;
+		o) open="xdg-open" ;;
+	esac
+done
+
+if [ -z "$search" ]; then
+	echo Empty search regex
+	exit
+fi
+
+find "$path" -iregex ".*$search.*[^s].." -exec $open \{\} \;

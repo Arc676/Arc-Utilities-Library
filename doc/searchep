@@ -1,0 +1,30 @@
+." Manpage for SEARCHEP.
+.Dd 05 Aug 2017
+.Dt "SEARCHEP" "67" "Arc Utilities Library"
+.Sh NAME
+.Nm searchep
+.Nd searches for a video and opens it with VLC
+.Sh SYNOPSIS
+.Nm
+.Op Fl s Ar regex
+.Op Fl p Ar path
+.Op Fl o
+.Sh DESCRIPTION
+The
+.Nm
+utility searches the specified path for a video with a filename
+that matches the specified regex and opens it with VLC.
+.Sh OPTIONS
+.Bl -tag -width flag
+.It Fl s Ar regex
+Specifies the regex to be used
+.It Fl p Ar path
+Specifies the path to be used (defaults to $HOME)
+.It Fl o
+Causes
+.Nm
+to assume that the script is being run on Ubuntu and changes the
+shell command from Mac's \fBopen\fP(1) to Ubuntu's \fBxdg-open\fP(1).
+.El
+.Sh SEE ALSO
+open(1), xdg-open(1)
