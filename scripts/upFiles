@@ -1,0 +1,71 @@
+#!/bin/bash
+
+#upFiles - helper program for backup.pl(67) that performs incremental backups; can also be used independently
+#  (Cross platform, BASh script)
+#Copyright (C) 2017  Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
+
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation (version 3)
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+fromFile=''
+fromArg=''
+src=''
+dst=''
+input=''
+verbosity='--progress'
+
+while getopts "yqf:s:d:" opt; do
+	case $opt in
+		f) fromFile=$OPTARG ;;
+		s) src=$OPTARG ;;
+		d) dst=$OPTARG ;;
+		y) input='y' ;;
+		q) verbosity='' ;;
+		*)
+			echo 'Invalid flag: '$opt
+			exit 1
+			;;
+	esac
+done
+
+if [ -z "$src" ]; then
+	echo 'No source path specified'
+	exit 1
+fi
+
+if [ -z "$dst" ]; then
+	echo 'No destination path specified'
+	exit 1
+fi
+
+if [ ! -z $fromFile ]; then
+	fromArg='--files-from='$fromFile
+fi
+
+if [ -z $input ]; then
+	rsync -ru --dry-run $verbosity $fromArg --exclude '.*' "$src" "$dst"
+	read -p 'Confirm? [y/N]: ' input
+fi
+if [[ $input == "y" ]]; then
+	rsync -ru $verbosity $fromArg --exclude '.*' "$src" "$dst"
+else
+	echo -n 'Skipping update of files in source path '$src
+	if [ ! -z $fromFile ]; then
+		echo -n ' matching criteria in '$fromFile
+	fi
+	echo
+fi
+unset input
+unset fromFile
+unset fromArg
+unset src
+unset dst

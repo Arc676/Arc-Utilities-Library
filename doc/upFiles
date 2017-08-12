@@ -1,0 +1,46 @@
+." Manpage for UPFILES.
+.Dd 12 Aug 2017
+.Dt "UPFILES" "67" "Arc Utilities Library"
+.Sh NAME
+.Nm upFiles
+.Nd helper script for backup.pl(67) that performs incremental updates
+.Pp
+.Sh SYNOPSIS
+.Op Fl yq
+.Op Fl f Ar file
+.Fl s Ar srcpath
+.Fl d Ar dstpath
+.Pp
+.Sh DESCRIPTION
+The
+.Nm
+(67) helper script is used by \fBbackup.pl\fP(67) to perform incremental updates.
+It uses \fBrsync\fP(1) to perform these backups.
+.Pp
+.Sh OPTIONS
+.Bl -tag -width flag
+.It Fl y
+Makes
+.Nm
+(67) skip the dry run and assume 'yes' for confirmation. By default, the script
+will run \fBrsync\fP(1) with the \fI--dry-run\fP flag first and ask for confirmation
+before performing the backup.
+.It Fl q
+Enables quiet mode; decreases \fBrsync\fP(1) verbosity. By default, the \fI--progress\fP
+flag is given.
+.It Fl f Ar file
+Passes \fIfile\fP to \fBrsync\fP with the \fI--files-from\fP flag.
+.It Fl s Ar srcpath
+Uses \fIsrcpath\fP as the source path for the backup. This parameter is required.
+.It Fl d Ar dstpath
+Uses \fIdstpath\fP as the destination path for the backup. This parameter is required.
+.El
+.Sh SEE ALSO
+backup.pl(67), perl(1), rsync(1), backup.conf(66)
+.Sh AUTHOR
+Written by Arc676/Alessandro Vinciguerra
+.Sh COPYRIGHT
+Copyright (C) 2017 Arc676/Alessandro Vinciguerra.
+.Pp
+Source code and man page available under GPLv3, see program
+file and gpl.txt file for details.
