@@ -1,0 +1,58 @@
+#!/bin/bash
+
+#makekeys - creates SSH keys and copies them to a remote machine for password-less SSH
+# (Cross platform, BASh script)
+#Copyright (C) 2016-2017  Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
+
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation (version 3)
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+function usage(){
+	echo 'Usage: makekeys -u remote_username -i IP_address'
+}
+
+rUser=''
+rIP=''
+
+while getopts "u:i:" opt; do
+	case $opt in
+		u) rUser=$OPTARG ;;
+		i) rIP=$OPTARG	 ;;
+		*)
+			echo 'Invalid flag: '$opt
+			usage
+			exit 1
+			;;
+	esac
+done
+
+if [[ -z $rUser || -z $rIP ]]; then
+	echo 'Remote username or remote IP not specified'
+	exit 1
+fi
+
+echo 'Changing working directory...'
+cd $HOME/.ssh
+
+echo 'Generating RSA public and private keys...'
+ssh-keygen -q -t rsa -N '' -f id_rsa
+
+echo 'Authorizing public key on remote machine...'
+echo 'Enter password for remote machine'
+ssh-copy-id $rUser@$rIP
+if [ $? -ne 0 ]; then
+	echo 'Operation failed'
+	exit 1
+fi
+
+echo 'Key setup complete'
+echo 'SSH should now be possible without entering the password each time'

@@ -1,0 +1,38 @@
+." Manpage for MAKEKEYS.
+.Dd 15 Aug 2017
+.Dt "MAKEKEYS" "67" "Arc Utilities Library"
+.Sh NAME
+.Nm makekeys
+.Nd create SSH keys and copy them to a remote host for password-less SSH
+.Pp
+.Sh SYNOPSIS
+.Nm
+.Fl u Ar remote_username
+.Fl i Ar IP
+.Pp
+.Sh DESCRIPTION
+The
+.Nm
+utility automates the creation and authorization of SSH keys. It uses \fBssh-keygen\fP(1) to create a public/private
+key pair named 'id_rsa' and \fBssh-copy-id\fP(1) to copy them to the remote host. If the remote host is configured to allow
+public key authentication, this operation will allow the user who executes it to remotely log into the remote host without
+entering the password each time. This also means that \fBscp\fP can be used without entering a password. Both flags must
+be specified to run the script.
+.Pp
+.Sh OPTIONS
+.Bl -tag -width flag
+.It Fl u Ar remote_username
+Uses \fIremote_username\fP as the desired username on the remote host.
+.It Fl i Ar IP
+Uses \fIIP\fP as the IP address of the remote host.
+.El
+.Pp
+.Sh SEE ALSO
+ssh-keygen(1), ssh-copy-id(1)
+.Sh AUTHOR
+Written by Arc676/Alessandro Vinciguerra
+.Sh COPYRIGHT
+Copyright (C) 2016-2017 Arc676/Alessandro Vinciguerra.
+.Pp
+Source code and man page available under GPLv3, see program
+file and gpl.txt file for details.
