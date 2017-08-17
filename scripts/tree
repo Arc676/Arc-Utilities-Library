@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#inspired by original code and regex found on http://modmyi.com/forums/mac-tips-tricks-and-mods/325681-top-50-terminal-commands.html
+#modified to use find(1) instead to allow for depth limitation
+#plus various other adaptations...
+
+#This was inspired by some code on a forum. THAT code was taken from somewhere else, but it was
+#copyrighted. I have modified the code to do a LOT more stuff. Not really sure how the legal stuff
+#works here... This should be enough changes for it to be considered my own.
+
+#tree - visual representation of directory hierarchy
+# (Cross platform, BASh script, uses GNU find and sed)
+#Copyright (C) 2016-2017  Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
+
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation (version 3)
+
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+
+#You should have received a copy of the GNU General Public License
+#along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+flag='-regex'
+regex='.*/[^.][^\/]*'
+depth=''
+path='.'
+
+shift=''
+leftShift=''
+
+if [[ $# -gt 0 && -d $1 ]]; then
+	path=$1
+	shift
+fi
+
+while getopts "d:ar:l:" opt; do
+	case $opt in
+		d) depth='-maxdepth '$OPTARG ;;
+		a) flag=''; regex='' ;;
+		r) regex=$OPTARG ;;
+		l) shift='-e'; leftShift="s/-{1,$OPTARG}//" ;;
+	esac
+done
+
+path=$(cd $path; pwd)
+echo $path
+find -E "$path" -type d -mindepth 1 $depth $flag "$regex" | sed -E -e 's/^\///' -e 's/[^\/]*\//-/g' -e 's/^/|/' $shift $leftShift

@@ -1,0 +1,64 @@
+." Manpage for TREE.
+.Dd 17 Aug 2017
+.Dt "TREE" "67" "Arc Utilities Library"
+.Sh NAME
+.Nm tree
+.Nd graphically lists subdirectories showing relative depth in the filesystem
+.Sp
+.Sh SYNOPSIS
+.Nm
+.Op Ar path
+.Op Fl d Ar max_depth
+.Op Fl r Ar regex
+.Op Fl l Ar n
+.Op Fl a
+.Sp
+.Sh DESCRIPTION
+The
+.Nm
+utility uses the \fBfind\fP(1) and \fBsed\fP(1) utilities to search the given directory for subdirectories
+and replace the contents of the path with an appropriate number of dashes such that
+the relative indentation of the folder name represents its depth in the entire filesystem (i.e. relative to the root folder).
+If no path is specified, the current directory is used. However, if a path is given, it must
+be the first argument.
+.Pp
+The output of the
+.Nm
+utility largely resembles the output of the Windows Command Prompt command with
+the same name.
+.Sp
+.Sh OPTIONS
+.Bl -tag -width flag
+.It Fl d Ar max_depth
+Limits the depth of the search of the directory tree to
+.Ar max_depth
+.Sp
+.It Fl r Ar regex
+Sets the regex used by \fBfind\fP to
+.Ar regex
+.Sp
+.It Fl a
+When this flag is given,
+.Nm
+doesn't pass any regex to \fBfind\fP(1) at all, showing all directories.
+.It Fl l Ar n
+(The letter 'ell') Shifts the representation of the directory tree to the left by
+.Ar n
+units i.e. removes that many dashes from each entry, showing a shallower depth. This can be useful when using
+.Nm
+in a deeply nested directory. If an entry has less than
+.Ar n
+dashes, it will move completely to the left. If any entries originally had less dashes than were to be removed,
+the output will no longer correctly represent the relative depth of the subdirectories, as all entries that had
+.Ar n
+or less dashes will be moved completely to the left, regardless of their respective depths.
+.El
+.Sh SEE ALSO
+find(1), sed(1)
+.Sh AUTHOR
+Written by Arc676/Alessandro Vinciguerra
+.Sh COPYRIGHT
+Copyright (C) 2016-2017 Arc676/Alessandro Vinciguerra.
+.Pp
+Source code and man page available under GPLv3, see program
+file and gpl.txt file for details.
