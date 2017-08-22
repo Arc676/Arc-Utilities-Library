@@ -87,6 +87,10 @@ while ((my $line = <$conffile>)){
 			warn "Parse error: update task found but no destination path specified\nSkipping...\n";
 			next;
 		}
+		if (! -d $src || ! -d $dst){
+			warn "Error: source directory or destination directory for task does not exist\nSkipping...\n";
+			next;
+		}
 		if ($askForTasks){
 			print $src . " -> " . $dst . "\nRun task? [Y/n]: ";
 			next if (<STDIN> =~ /^[nN]/);;
@@ -174,6 +178,10 @@ while ((my $line = <$conffile>)){
 		}
 		if ($bPath eq ""){
 			warn "Parse error: backup task found but no backup path specified\nSkipping...\n";
+			next;
+		}
+		if (! -d $src || ! -d $bPath){
+			warn "Error: source directory or destination directory for task does not exist\nSkipping...\n";
 			next;
 		}
 		$dst = $bPath . '/' . $dst;
