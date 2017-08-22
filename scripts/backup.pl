@@ -89,7 +89,7 @@ while ((my $line = <$conffile>)){
 			print $src . " -> " . $dst . "\nRun task? [Y/n]: ";
 			next if (<STDIN> =~ /^[nN]/);;
 		}
-		my @args = ("upFiles","-s",$src,"-d",$dst);
+		my @args = ("./upFiles","-s",$src,"-d",$dst);
 		
 		push(@args, "-y") 	 if ($assumeYes);
 		push(@args, "-f", $file) if ($file ne "");
@@ -113,7 +113,7 @@ while ((my $line = <$conffile>)){
 		my $confirmFirst = $alwaysConfirm;
 		my $latest = "";
 		
-		my @args = ("rsync","-rtc");
+		my @args = ("rsync","-rt");
 		push(@args, "--verbose", "--progress") if (not $quiet);
 		while (defined($line = <$conffile>)){
 			next if ($line =~ /^#/);

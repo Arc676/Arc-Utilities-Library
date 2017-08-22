@@ -52,11 +52,11 @@ if [ ! -z $fromFile ]; then
 fi
 
 if [ -z $input ]; then
-	rsync -ruc --dry-run $verbosity $fromArg --exclude '.*' "$src" "$dst"
+	rsync -ru --dry-run $verbosity $fromArg --exclude '.*' "$src" "$dst"
 	read -p 'Confirm? [y/N]: ' input
 fi
 if [[ $input == "y" ]]; then
-	rsync -ruc $verbosity $fromArg --exclude '.*' "$src" "$dst"
+	rsync -ru $verbosity $fromArg --exclude '.*' "$src" "$dst"
 else
 	echo -n 'Skipping update of files in source path '$src
 	if [ ! -z $fromFile ]; then

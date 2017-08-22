@@ -6,7 +6,6 @@
 .Nd helper script for backup.pl(67) that performs incremental updates
 .Pp
 .Sh SYNOPSIS
-.Nm
 .Op Fl yq
 .Op Fl f Ar file
 .Fl s Ar srcpath
