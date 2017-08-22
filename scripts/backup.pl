@@ -46,6 +46,8 @@ for my $arg (@ARGV){
 		$upOnly = 1;
 	} elsif ($arg eq "--idtasks"){
 		$printIDs = 1;
+	} else {
+		die "Invalid flag: $arg\n";
 	}
 }
 
@@ -85,20 +87,31 @@ while ((my $line = <$conffile>)){
 			warn "Parse error: update task found but no destination path specified\nSkipping...\n";
 			next;
 		}
+		if (! -d $src || ! -d $dst){
+			warn "Error: source directory or destination directory for task does not exist\nSkipping...\n";
+			next;
+		}
 		if ($askForTasks){
 			print $src . " -> " . $dst . "\nRun task? [Y/n]: ";
 			next if (<STDIN> =~ /^[nN]/);;
 		}
-		my @args = ("./upFiles","-s",$src,"-d",$dst);
 		
-		push(@args, "-y") 	 if ($assumeYes);
-		push(@args, "-f", $file) if ($file ne "");
-		push(@args, "-q")	 if ($quiet);
+		my @args = ("rsync", "-ruc");
+		push(@args, "--verbose", "--progress") 	if (not $quiet);
+		push(@args, "--files-from=$file") 	if ($file ne "");
 		
+		if (not $assumeYes){
+			my @tArgs = (@args, "--dry-run", $src, $dst);
+			system(@tArgs) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
+			print "OK? [y/N]: ";
+			next unless (<STDIN> =~ /^[yY]/);
+		}
+		push(@args, $src, $dst);
+
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
-			system(@args);
+			system(@args) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
 		}
 	} elsif ($line eq "[BACKUP]"){
 		if ($upOnly){
@@ -167,6 +180,10 @@ while ((my $line = <$conffile>)){
 			warn "Parse error: backup task found but no backup path specified\nSkipping...\n";
 			next;
 		}
+		if (! -d $src || ! -d $bPath){
+			warn "Error: source directory or destination directory for task does not exist\nSkipping...\n";
+			next;
+		}
 		$dst = $bPath . '/' . $dst;
 		if ($askForTasks){
 			print $src . " -> " . $dst . "\nRun task? [Y/n]: ";
@@ -174,18 +191,18 @@ while ((my $line = <$conffile>)){
 		}
 		if ($confirmFirst){
 			my @tArgs = (@args, "--dry-run", $src, $dst);
-			system(@tArgs);
+			system(@tArgs) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
 			print "OK? [y/N]: ";
 			next unless (<STDIN> =~ /^[yY]/);
 		}
-		push @args, $src, $dst;
+		push(@args, $src, $dst);
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
-			system(@args);
+			system(@args) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
 			if ($updateLink && $latest ne ""){
-				system("rm $latest");
-				system("ln -s $dst $latest");
+				system("unlink $latest") == 0 or die "unlink failed with error code " . ($? >> 8) . "\n";
+				system("ln -s $dst $latest") == 0 or die "ln failed with error code " . ($? >> 8) . "\n";
 			}
 		}
 	}
