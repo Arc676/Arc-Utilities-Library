@@ -89,12 +89,19 @@ while ((my $line = <$conffile>)){
 			print $src . " -> " . $dst . "\nRun task? [Y/n]: ";
 			next if (<STDIN> =~ /^[nN]/);;
 		}
-		my @args = ("upFiles","-s",$src,"-d",$dst);
 		
-		push(@args, "-y") 	 if ($assumeYes);
-		push(@args, "-f", $file) if ($file ne "");
-		push(@args, "-q")	 if ($quiet);
+		my @args = ("rsync", "-ruc");
+		push(@args, "--verbose", "--progress") 	if (not $quiet);
+		push(@args, "-f=$file") 		if ($file ne "");
 		
+		if (not $assumeYes){
+			my @tArgs = (@args, "--dry-run", $src, $dst);
+			system(@tArgs);
+			print "OK? [y/N]: ";
+			next unless (<STDIN> =~ /^[yY]/);
+		}
+		push(@args, $src, $dst);
+
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
@@ -178,7 +185,7 @@ while ((my $line = <$conffile>)){
 			print "OK? [y/N]: ";
 			next unless (<STDIN> =~ /^[yY]/);
 		}
-		push @args, $src, $dst;
+		push(@args, $src, $dst);
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
