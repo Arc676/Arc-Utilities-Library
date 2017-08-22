@@ -46,6 +46,8 @@ for my $arg (@ARGV){
 		$upOnly = 1;
 	} elsif ($arg eq "--idtasks"){
 		$printIDs = 1;
+	} else {
+		die "Invalid flag: $arg\n";
 	}
 }
 
@@ -92,11 +94,11 @@ while ((my $line = <$conffile>)){
 		
 		my @args = ("rsync", "-ruc");
 		push(@args, "--verbose", "--progress") 	if (not $quiet);
-		push(@args, "-f=$file") 		if ($file ne "");
+		push(@args, "--files-from=$file") 	if ($file ne "");
 		
 		if (not $assumeYes){
 			my @tArgs = (@args, "--dry-run", $src, $dst);
-			system(@tArgs);
+			system(@tArgs) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
 			print "OK? [y/N]: ";
 			next unless (<STDIN> =~ /^[yY]/);
 		}
@@ -105,7 +107,7 @@ while ((my $line = <$conffile>)){
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
-			system(@args);
+			system(@args) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
 		}
 	} elsif ($line eq "[BACKUP]"){
 		if ($upOnly){
@@ -181,7 +183,7 @@ while ((my $line = <$conffile>)){
 		}
 		if ($confirmFirst){
 			my @tArgs = (@args, "--dry-run", $src, $dst);
-			system(@tArgs);
+			system(@tArgs) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
 			print "OK? [y/N]: ";
 			next unless (<STDIN> =~ /^[yY]/);
 		}
@@ -189,10 +191,10 @@ while ((my $line = <$conffile>)){
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
-			system(@args);
+			system(@args) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
 			if ($updateLink && $latest ne ""){
-				system("rm $latest");
-				system("ln -s $dst $latest");
+				system("unlink $latest") == 0 or die "unlink failed with error code " . ($? >> 8) . "\n";
+				system("ln -s $dst $latest") == 0 or die "ln failed with error code " . ($? >> 8) . "\n";
 			}
 		}
 	}
