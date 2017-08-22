@@ -10,3 +10,5 @@ backup.pl - configurable backup manager that uses rsync(1)
 listen4keyword - toggles 'listen for keyword' for Mac speakable items
 searchep - regex-searches for a video in a specified path and opens it with VLC
 upFiles - helper program for backup.pl; performs incremental backups
+tree - visually display the directory hierarchy
+makekeys - automatically generate SSH keys and copy them to a remote host for password-less SSH
