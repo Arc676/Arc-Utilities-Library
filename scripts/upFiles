@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#upFiles - helper program for backup.pl(67) that performs incremental backups; can also be used independently
+#upFiles - helper program for backup.pl(67) that performs incremental backups (obsolete); can also/still be used independently
 #  (Cross platform, BASh script)
 #Copyright (C) 2017  Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
 

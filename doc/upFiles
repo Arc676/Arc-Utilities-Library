@@ -1,9 +1,9 @@
 ." Manpage for UPFILES.
-.Dd 12 Aug 2017
+.Dd 22 Aug 2017
 .Dt "UPFILES" "67" "Arc Utilities Library"
 .Sh NAME
 .Nm upFiles
-.Nd helper script for backup.pl(67) that performs incremental updates
+.Nd helper script for backup.pl(67) that performs incremental updates (obsolete)
 .Pp
 .Sh SYNOPSIS
 .Op Fl yq
@@ -15,7 +15,11 @@
 The
 .Nm
 (67) helper script is used by \fBbackup.pl\fP(67) to perform incremental updates.
-It uses \fBrsync\fP(1) to perform these backups.
+It uses \fBrsync\fP(1) to perform these backups. As of August 22, 2017, the
+.Nm
+helper script is no longer necessary to run \fBbackup.pl\fP(67), as it can now
+perform incremental backups independently. The script can still be used by itself
+to perform unconfigured incremental backups.
 .Pp
 .Sh OPTIONS
 .Bl -tag -width flag
