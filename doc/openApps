@@ -1,0 +1,40 @@
+." Manpage for OPENAPPS.PL.
+.Dd 25 Aug 2017
+.Dt "OPENAPPS.PL" "67" "Arc Utilities Library"
+.Sh NAME
+.Nm openApps.pl
+.Nd launches an arbitrary number of apps with \fBopen\fP(1)
+.Pp
+.Sh SYNOPSIS
+.Nm
+.Pp
+.Sh DESCRIPTION
+The
+.Nm
+Perl script asks the user to input app names until empty input is given.
+Then, Mac's \fBopen\fP(1) command is used to launch all the applications.
+For simplicity, the application names are quoted when the shell command is
+run so that applications with spaces in their names don't need to be quoted
+on input. To protect against code injection, if any single inputted app name
+contains a quotation mark, it is ignored.
+.Pp
+The purpose of the
+.Nm
+script is to launch multiple applications together, possibly to restore a
+workspace after logging in. This is useful for older devices: Macs still using
+hard disk drives may be slow to boot up or restore applications when using
+Apple's Resume capability (introduced in 10.7, Resume reopens everything when you restart
+so you can continue working where you left off), so disabling it might actually save
+more time than using it. By using the
+.Nm
+script, you can launch all the apps you need without having to use an app opener
+such as Launchpad multiple times and without slowing down your Mac with Resume.
+.Sh SEE ALSO
+open(1)
+.Sh AUTHOR
+Written by Arc676/Alessandro Vinciguerra
+.Sh COPYRIGHT
+Copyright (C) 2016-2017 Arc676/Alessandro Vinciguerra.
+.Pp
+Source code and man page available under GPLv3, see program
+file and gpl.txt file for details.
