@@ -96,7 +96,7 @@ while ((my $line = <$conffile>)){
 			next if (<STDIN> =~ /^[nN]/);;
 		}
 		
-		my @args = ("rsync", "-ruc");
+		my @args = ("rsync", "-ru", "--exclude", "'.*'");
 		push(@args, "--verbose", "--progress") 	if (not $quiet);
 		push(@args, "--files-from=$file") 	if ($file ne "");
 		
@@ -126,7 +126,7 @@ while ((my $line = <$conffile>)){
 		my $confirmFirst = $alwaysConfirm;
 		my $latest = "";
 		
-		my @args = ("rsync","-rt");
+		my @args = ("rsync","-rt", "--exclude", "'.*'");
 		push(@args, "--verbose", "--progress") if (not $quiet);
 		while (defined($line = <$conffile>)){
 			next if ($line =~ /^#/);
