@@ -28,7 +28,7 @@ Always perform a dry run of \fBrsync\fP and prompt the user to confirm the backu
 task before copying any files, regardless of what the configuration file says.
 .It Fl -ask
 Prompt for confirmation before each task, allowing the user to run only a subset of
-the backup tasks specified in the configuration file.
+the backup tasks specified in the configuration file. This implies \fB--idtasks\fP.
 .It Fl -debug
 Print shell commands before running them to aid debugging/troubleshooting.
 .It Fl -link

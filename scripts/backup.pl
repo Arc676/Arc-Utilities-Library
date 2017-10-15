@@ -36,6 +36,7 @@ for my $arg (@ARGV){
 		$alwaysConfirm = 1;
 	} elsif ($arg eq "--ask"){
 		$askForTasks = 1;
+		#printIDs = 1;
 	} elsif ($arg eq "--debug"){
 		$debug = 1;
 	} elsif ($arg eq "--link"){
