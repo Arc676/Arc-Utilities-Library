@@ -27,6 +27,20 @@ my $updateLink = 0;
 my $quiet = 0;
 my $upOnly = 0;
 my $printIDs = 0;
+my $quitOnFail = 0;
+
+sub opFailed {
+	my $err = shift;
+	if ($quitOnFail) {
+		die $err;
+	} else {
+		warn $err;
+		print "Continue backup? [y/N]: ";
+		my $inp = <STDIN>;
+		chomp $inp;
+		$inp =~ /^[yY]/ or die "User canceled\n";
+	}
+}
 
 for my $arg (@ARGV){
 	if ($arg =~ /--conf=.+|-f=.+/){
@@ -47,6 +61,8 @@ for my $arg (@ARGV){
 		$upOnly = 1;
 	} elsif ($arg eq "--idtasks"){
 		$printIDs = 1;
+	} elsif ($arg eq "-s" || $arg eq "--safe" || $arg eq "--qof") {
+		$quitOnFail = 1;
 	} else {
 		die "Invalid flag: $arg\n";
 	}
@@ -103,7 +119,7 @@ while ((my $line = <$conffile>)){
 		
 		if (not $assumeYes){
 			my @tArgs = (@args, "--dry-run", $src, $dst);
-			system(@tArgs) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
+			system(@tArgs) == 0 or opFailed("rsync exited with error code " . ($? >> 8) . "\n");
 			print "OK? [y/N]: ";
 			next unless (<STDIN> =~ /^[yY]/);
 		}
@@ -112,7 +128,7 @@ while ((my $line = <$conffile>)){
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
-			system(@args) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
+			system(@args) == 0 or opFailed("rsync exited with error code " . ($? >> 8) . "\n");
 		}
 	} elsif ($line eq "[BACKUP]"){
 		if ($upOnly){
@@ -192,7 +208,7 @@ while ((my $line = <$conffile>)){
 		}
 		if ($confirmFirst){
 			my @tArgs = (@args, "--dry-run", $src, $dst);
-			system(@tArgs) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
+			system(@tArgs) == 0 or opFailed("rsync exited with error code " . ($? >> 8) . "\n");
 			print "OK? [y/N]: ";
 			next unless (<STDIN> =~ /^[yY]/);
 		}
@@ -200,10 +216,10 @@ while ((my $line = <$conffile>)){
 		if ($debug){
 			print join(" ", @args) . "\n";
 		} else {
-			system(@args) == 0 or die "rsync exited with error code " . ($? >> 8) . "\n";
+			system(@args) == 0 or opFailed("rsync exited with error code " . ($? >> 8) . "\n");
 			if ($updateLink && $latest ne ""){
-				system("unlink $latest") == 0 or die "unlink failed with error code " . ($? >> 8) . "\n";
-				system("ln -s $dst $latest") == 0 or die "ln failed with error code " . ($? >> 8) . "\n";
+				system("unlink $latest") == 0 or opFailed("unlink failed with error code " . ($? >> 8) . "\n");
+				system("ln -s $dst $latest") == 0 or opFailed("ln failed with error code " . ($? >> 8) . "\n");
 			}
 		}
 	}

@@ -40,6 +40,12 @@ Reduce \fBrsync\fP verbosity. By default, all calls to \fBrsync\fP include the \
 Only run update tasks and skip all backup tasks. See backup.conf(66) for more details.
 .It Fl -idtasks
 Output the ID of each task as it is run.
+.It Fl s, -safe, -qof
+Tells
+.Nm
+to terminate if any shell command exits with a non-zero error code (quit on fail mode). By default
+this is disabled and in the event of a failed command, the user will be prompted to determine whether
+the backup should be canceled.
 .El
 .Sh SEE ALSO
 perl(1), rsync(1), backup.conf(66)
