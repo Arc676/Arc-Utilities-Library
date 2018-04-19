@@ -1,6 +1,7 @@
 #!/usr/bin/awk -f
 
-#Works with the output of timeParser.pl to give the total and average times
+#timeParser.awk - Works with the output of timeParser.pl to give the total and average times
+#	(Designed to work with BSD time(1), AWK script)
 #Copyright (C) 2018  Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
 
 #This program is free software: you can redistribute it and/or modify

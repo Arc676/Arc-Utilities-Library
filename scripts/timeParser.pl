@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
-#Reads the output from BSD time(1) and converts it into a single CSV line
+#timeParser.pl - Reads the output from BSD time(1) and converts it into a single CSV line
+#	(Designed to work with BSD time(1), Perl script)
 #Copyright (C) 2018  Arc676/Alessandro Vinciguerra <alesvinciguerra@gmail.com>
 
 #This program is free software: you can redistribute it and/or modify
