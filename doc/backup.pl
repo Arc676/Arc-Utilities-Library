@@ -26,6 +26,9 @@ Specifies a configuration file to be used. If none is given, ~/.arcutillib/backu
 .It Fl -alwaysconf
 Always perform a dry run of \fBrsync\fP and prompt the user to confirm the backup
 task before copying any files, regardless of what the configuration file says.
+.It Fl d, -download
+Downloads changes from the destination into the source directory instead if vice versa. This implies
+\fB--uponly\fP, \fB--idtasks\fP, and \fB--ask\fP.
 .It Fl -ask
 Prompt for confirmation before each task, allowing the user to run only a subset of
 the backup tasks specified in the configuration file. This implies \fB--idtasks\fP.

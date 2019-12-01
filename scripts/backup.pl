@@ -28,6 +28,7 @@ my $quiet = 0;
 my $upOnly = 0;
 my $printIDs = 0;
 my $quitOnFail = 0;
+my $download = 0;
 
 sub opFailed {
 	my $err = shift;
@@ -50,7 +51,7 @@ for my $arg (@ARGV){
 		$alwaysConfirm = 1;
 	} elsif ($arg eq "--ask"){
 		$askForTasks = 1;
-		#printIDs = 1;
+		$printIDs = 1;
 	} elsif ($arg eq "--debug"){
 		$debug = 1;
 	} elsif ($arg eq "--link"){
@@ -63,6 +64,11 @@ for my $arg (@ARGV){
 		$printIDs = 1;
 	} elsif ($arg eq "-s" || $arg eq "--safe" || $arg eq "--qof") {
 		$quitOnFail = 1;
+	} elsif ($arg eq "-d" || $arg eq "--download") {
+		$download = 1;
+		$upOnly = 1;
+		$askForTasks = 1;
+		$printIDs = 1;
 	} else {
 		die "Invalid flag: $arg\n";
 	}
@@ -109,7 +115,11 @@ while ((my $line = <$conffile>)){
 			next;
 		}
 		if ($askForTasks){
-			print $src . " -> " . $dst . "\nRun task? [Y/n]: ";
+			if ($download) {
+				print "Download " . $dst . " -> " . $src . "\nRun task? [Y/n]: ";
+			} else {
+				print "Upload " . $src . " -> " . $dst . "\nRun task? [Y/n]: ";
+			}
 			next if (<STDIN> =~ /^[nN]/);;
 		}
 		
@@ -123,7 +133,11 @@ while ((my $line = <$conffile>)){
 			print "OK? [y/N]: ";
 			next unless (<STDIN> =~ /^[yY]/);
 		}
-		push(@args, $src, $dst);
+		if ($download) {
+			push(@args, $dst, $src);
+		} else {
+			push(@args, $src, $dst);
+		}
 
 		if ($debug){
 			print join(" ", @args) . "\n";
@@ -178,7 +192,7 @@ while ((my $line = <$conffile>)){
 			} elsif ($line eq "[CONFIRM]"){
 				$confirmFirst = 1;
 			} elsif ($line eq "[COMPARE BPATH]"){
-				for my $prev (split("\n", `ls $bPath`)){
+				for my $prev (split("\n", `ls "$bPath"`)){
 					my $arg = "--compare-dest=" . $bPath . '/' . $prev;
 					push @args, $arg;
 				}
